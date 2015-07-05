@@ -2,6 +2,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+#!/bin/bash
 first_path=$(which $1)
 echo command path: $first_path
 
