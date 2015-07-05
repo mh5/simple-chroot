@@ -1,2 +1,2 @@
 # simple-chroot
-Chroot environment maker
+Simple chroot environment maker
