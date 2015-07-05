@@ -9,7 +9,7 @@ echo command path: $first_path
 deps=$(ldd $first_path | grep -oh '/.* ')
 echo dependencies paths: $deps
 
-cloned="$first_path $deps $conf_files"
+cloned="$first_path $deps"
 echo paths that will be cloned: $cloned
 
 echo The following files will be cloned: $cloned
