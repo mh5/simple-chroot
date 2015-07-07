@@ -12,9 +12,23 @@ function add_to_jail {
 
 	for i in $cloned;
 		do
-			cp -v --parents $i .
+			cp -v --parents $i $2
 		done
 }
 
-add_to_jail $1
+OPTIND=1                      
+                              
+output_dir="./jail"
+while getopts "o:f:" opt; do    
+        case "$opt" in        
+        f)                    
+                add_to_jail "$OPTARG" "$output_dir"
+                ;;            
+	o)
+		output_dir="$OPTARG"
+		mkdir $output_dir
+		;;
+        esac                  
+done                          
+
 
