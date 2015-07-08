@@ -5,10 +5,10 @@
 #!/bin/bash
 
 function add_to_jail {
-	first_path=$1
-	deps=$(ldd $first_path | grep -oh '/.* ')
+	path_to_file=$1
+	deps=$(ldd $path_to_file| grep -oh '/.* ')
 
-	cloned="$first_path $deps"
+	cloned="$path_to_file $deps"
 
 	for i in $cloned;
 		do
@@ -16,7 +16,7 @@ function add_to_jail {
 		done
 }
 
-OPTIND=1                      
+OPTIND=1
                               
 output_dir="./jail"
 while getopts "o:v:f:" opt; do
