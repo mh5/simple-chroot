@@ -19,9 +19,9 @@ function add_to_jail {
 OPTIND=1                      
                               
 output_dir="./jail"
-while getopts "o:f:" opt; do    
+while getopts "o:v:" opt; do    
 	case "$opt" in        
-		f)                    
+		v)                    
 			add_to_jail "$OPTARG" "$output_dir"
 		;;            
 		o)
