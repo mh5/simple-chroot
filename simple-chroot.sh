@@ -5,7 +5,7 @@
 #!/bin/bash
 
 function add_to_jail {
-	first_path=$(which $1)
+	first_path=$1
 	deps=$(ldd $first_path | grep -oh '/.* ')
 
 	cloned="$first_path $deps"
@@ -19,16 +19,18 @@ function add_to_jail {
 OPTIND=1                      
                               
 output_dir="./jail"
-while getopts "o:v:" opt; do    
+while getopts "o:v:f:" opt; do
 	case "$opt" in        
-		v)                    
-			add_to_jail "$OPTARG" "$output_dir"
-		;;            
+		f)
+			add_to_jail $OPTARG "$output_dir"
+		;;
+		v)
+			add_to_jail $(which "$OPTARG") "$output_dir"
+		;;
 		o)
 			output_dir="$OPTARG"
 			mkdir $output_dir
 		;;
-	esac                  
-done                          
-
+	esac
+done
 
