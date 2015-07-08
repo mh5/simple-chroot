@@ -36,7 +36,7 @@ while getopts "o:v:f:" opt; do
 done
 
 
-mkdir $output_dir
+mkdir -p $output_dir
 
 for path_to_file in $paths_to_files;
 	do
