@@ -19,18 +19,27 @@ function add_to_jail {
 OPTIND=1
                               
 output_dir="./jail"
+paths_to_files=()
+
 while getopts "o:v:f:" opt; do
 	case "$opt" in        
 		f)
-			add_to_jail $OPTARG "$output_dir"
+			paths_to_files+="$OPTARG "
 		;;
 		v)
-			add_to_jail $(which "$OPTARG") "$output_dir"
+			paths_to_files+="$(which $OPTARG) "
 		;;
 		o)
 			output_dir="$OPTARG"
-			mkdir $output_dir
 		;;
 	esac
 done
+
+
+mkdir $output_dir
+
+for path_to_file in $paths_to_files;
+	do
+		add_to_jail $path_to_file $output_dir
+	done
 
