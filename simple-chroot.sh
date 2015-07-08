@@ -20,15 +20,15 @@ OPTIND=1
                               
 output_dir="./jail"
 while getopts "o:f:" opt; do    
-        case "$opt" in        
-        f)                    
-                add_to_jail "$OPTARG" "$output_dir"
-                ;;            
-	o)
-		output_dir="$OPTARG"
-		mkdir $output_dir
+	case "$opt" in        
+		f)                    
+			add_to_jail "$OPTARG" "$output_dir"
+		;;            
+		o)
+			output_dir="$OPTARG"
+			mkdir $output_dir
 		;;
-        esac                  
+	esac                  
 done                          
 
 
