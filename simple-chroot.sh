@@ -38,8 +38,7 @@ done
 
 mkdir -p $output_dir
 
-for path_to_file in $paths_to_files;
-	do
-		add_to_jail $path_to_file $output_dir
-	done
+for path_to_file in $paths_to_files; do
+	add_to_jail $path_to_file $output_dir
+done
 
