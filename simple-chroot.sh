@@ -16,6 +16,13 @@ function add_to_jail {
 		done
 }
 
+function check_file {
+	if [[ ! -f $1 ]]; then
+		echo "Fatal error: \`$1' is not a file!"
+		exit 1;
+	fi
+}
+
 OPTIND=1
                               
 output_dir="./jail"
@@ -24,6 +31,7 @@ paths_to_files=()
 while getopts "o:c:f:" opt; do
 	case "$opt" in        
 		f)
+			check_file $OPTARG
 			paths_to_files+="$OPTARG "
 		;;
 		c)
