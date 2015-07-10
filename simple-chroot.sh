@@ -27,14 +27,14 @@ while getopts "o:c:f:" opt; do
 			paths_to_files+="$OPTARG "
 		;;
 		c)
-			paths_to_files+="$(which $OPTARG) "
+			paths_to_files+="$(which $OPTARG) " \
+			  || { printf "Fatal error: \`$OPTARG' command not found!\n" ;  exit 1; }
 		;;
 		o)
 			output_dir="$OPTARG"
 		;;
 	esac
 done
-
 
 mkdir -p $output_dir
 
