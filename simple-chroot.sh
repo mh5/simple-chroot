@@ -21,12 +21,12 @@ OPTIND=1
 output_dir="./jail"
 paths_to_files=()
 
-while getopts "o:v:f:" opt; do
+while getopts "o:c:f:" opt; do
 	case "$opt" in        
 		f)
 			paths_to_files+="$OPTARG "
 		;;
-		v)
+		c)
 			paths_to_files+="$(which $OPTARG) "
 		;;
 		o)
