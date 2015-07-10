@@ -16,6 +16,11 @@ function add_to_jail {
 		done
 }
 
+function check_command {
+	command_file="$(which $1)" || { printf "Fatal error: \`$1' command not found!\n" ;  exit 1; }
+	check_file $command_file
+}
+
 function check_file {
 	if [[ ! -f $1 ]]; then
 		echo "Fatal error: \`$1' is not a file!"
@@ -35,8 +40,8 @@ while getopts "o:c:f:" opt; do
 			paths_to_files+="$OPTARG "
 		;;
 		c)
-			paths_to_files+="$(which $OPTARG) " \
-			  || { printf "Fatal error: \`$OPTARG' command not found!\n" ;  exit 1; }
+			check_command $OPTARG
+			paths_to_files+="$command_file "
 		;;
 		o)
 			output_dir="$OPTARG"
