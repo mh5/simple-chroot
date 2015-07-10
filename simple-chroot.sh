@@ -34,7 +34,7 @@ output_dir="./jail"
 paths_to_files=()
 
 while getopts "o:c:f:" opt; do
-	case "$opt" in        
+	case "$opt" in
 		f)
 			check_file $OPTARG
 			paths_to_files+="$OPTARG "
