@@ -1,8 +1,8 @@
+#!/bin/bash
+
 # Copyright (c) 2015, M. Helmy Hemida. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-
-#!/bin/bash
 
 function add_to_jail {
 	path_to_file=$1
