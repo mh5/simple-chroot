@@ -17,7 +17,8 @@ function add_to_jail {
 }
 
 function check_command {
-	command_file="$(which $1)" || { printf "Fatal error: \`$1' command not found!\n" ;  exit 1; }
+	command_file="$(which $1)" || \
+	    { printf "Fatal error: \`$1' command not found!\n" ;  exit 1; }
 	check_file $command_file
 }
 
