@@ -5,10 +5,10 @@
 #!/bin/bash
 
 function add_to_jail {
-	path_to_file=$1
-	deps=$(ldd $path_to_file| grep -oh '/.* ')
-
-	cloned="$path_to_file $deps"
+	local path_to_file=$1
+	local deps=$(ldd $path_to_file| grep -oh '/.* ')
+	
+	local cloned="$path_to_file $deps"
 
 	for i in $cloned;
 		do
