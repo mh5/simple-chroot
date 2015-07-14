@@ -3,8 +3,9 @@
 # Copyright (c) 2015, M. Helmy Hemida. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
+
 function inc_refcount {
-	local refs_file=$2/.refs
+	local refs_file=$2.refs
 	touch $refs_file
 
 	local line=$(grep $1 $refs_file)
@@ -56,7 +57,7 @@ function check_file {
 
 OPTIND=1
                               
-output_dir="./jail"
+output_dir="./jail/"
 paths_to_files=()
 
 while getopts "o:c:f:" opt; do
