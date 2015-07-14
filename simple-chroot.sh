@@ -18,13 +18,13 @@ function inc_refcount {
 
 	sed -i "\|$1|d" $refs_file
 
-	line_arr=($line)
-	dep=${line_arr[0]}
-	num=${line_arr[1]}
+	local line_arr=($line)
+	local dep=${line_arr[0]}
+	local num=${line_arr[1]}
 
-	num=$((num+1))
+	local num=$((num+1))
 
-	line="$dep $num"
+	local line="$dep $num"
 
 	echo $line >> $refs_file
 }
