@@ -3,6 +3,30 @@
 # Copyright (c) 2015, M. Helmy Hemida. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
+function inc_refcount {
+	local refs_file=$2/.refs
+	touch $refs_file
+
+	local line=$(grep $1 $refs_file)
+
+	if [ -z "$line" ]; then
+		line="$1 1"
+		echo $line >> $refs_file
+		return
+	fi  
+
+	sed -i "\|$1|d" $refs_file
+
+	line_arr=($line)
+	dep=${line_arr[0]}
+	num=${line_arr[1]}
+
+	num=$((num+1))
+
+	line="$dep $num"
+
+	echo $line >> $refs_file
+}
 
 function add_to_jail {
 	local path_to_file=$1
@@ -13,6 +37,7 @@ function add_to_jail {
 	for i in $cloned;
 		do
 			cp -v --parents $i $2
+			inc_refcount $i $2
 		done
 }
 
