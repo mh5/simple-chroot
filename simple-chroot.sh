@@ -5,7 +5,7 @@
 # found in the LICENSE file.
 
 function inc_refcount {
-	local refs_file=$2.refs
+	local refs_file="$2.jail-data/refs"
 	touch $refs_file
 
 	local line=$(grep $1 $refs_file)
@@ -77,6 +77,7 @@ while getopts "o:c:f:" opt; do
 done
 
 mkdir -p $output_dir
+mkdir -p "$output_dir/.jail-data"
 
 for path_to_file in $paths_to_files; do
 	add_to_jail $path_to_file $output_dir
