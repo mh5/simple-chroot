@@ -29,9 +29,21 @@ function inc_refcount {
 	echo $line >> $refs_file
 }
 
-function inc_refcount {
-	# not implemented yet
-	return
+function dec_refcount {
+	local refs_file="$2.jail-data/refs"
+	local line=$(grep $1 $refs_file)
+
+	sed -i "\|$1|d" $refs_file
+
+	local line_arr=($line)
+	local dep=${line_arr[0]}
+	local num=${line_arr[1]}
+
+	local num=$((num-1))
+
+	local line="$dep $num"
+
+	echo $line >> $refs_file
 }
 
 function add_to_jail {
