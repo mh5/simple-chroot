@@ -54,7 +54,7 @@ function collect_deps {
 	echo $deps
 }
 
-function add_to_jail {
+function jail_install {
 	local path_to_file=$1
 	local cloned=$(collect_deps $path_to_file)
 
@@ -65,7 +65,7 @@ function add_to_jail {
 		done
 }
 
-function remove_from_jail {
+function jail_purge {
 	local path_to_file=$1
 	local decrementedd=$(collect_deps $path_to_file)
 
@@ -113,6 +113,6 @@ mkdir -p $output_dir
 mkdir -p "$output_dir/.jail-data"
 
 for path_to_file in $paths_to_files; do
-	add_to_jail $path_to_file $output_dir
+	jail_install $path_to_file $output_dir
 done
 
