@@ -60,8 +60,15 @@ function add_to_jail {
 }
 
 function remove_from_jail {
-	# not implemented yet
-	return
+	local path_to_file=$1
+	local deps=$(ldd $path_to_file| grep -oh '/.* ')
+	
+	local decremented="$path_to_file $deps"
+
+	for i in $decremented;
+		do
+			dec_refcount $i $2
+		done
 }
 
 function check_command {
