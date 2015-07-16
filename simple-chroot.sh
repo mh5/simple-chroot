@@ -29,6 +29,11 @@ function inc_refcount {
 	echo $line >> $refs_file
 }
 
+function inc_refcount {
+	# not implemented yet
+	return
+}
+
 function add_to_jail {
 	local path_to_file=$1
 	local deps=$(ldd $path_to_file| grep -oh '/.* ')
@@ -40,6 +45,11 @@ function add_to_jail {
 			cp -v --parents $i $2
 			inc_refcount $i $2
 		done
+}
+
+function remove_from_jail {
+	# not implemented yet
+	return
 }
 
 function check_command {
