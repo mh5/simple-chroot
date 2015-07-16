@@ -46,11 +46,17 @@ function dec_refcount {
 	echo $line >> $refs_file
 }
 
-function add_to_jail {
+function collect_deps {
 	local path_to_file=$1
 	local deps=$(ldd $path_to_file| grep -oh '/.* ')
-	
-	local cloned="$path_to_file $deps"
+	local deps="$path_to_file $deps"
+
+	echo $deps
+}
+
+function add_to_jail {
+	local path_to_file=$1
+	local cloned=$(collect_deps $path_to_file)
 
 	for i in $cloned;
 		do
@@ -61,9 +67,7 @@ function add_to_jail {
 
 function remove_from_jail {
 	local path_to_file=$1
-	local deps=$(ldd $path_to_file| grep -oh '/.* ')
-	
-	local decremented="$path_to_file $deps"
+	local decrementedd=$(collect_deps $path_to_file)
 
 	for i in $decremented;
 		do
