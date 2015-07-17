@@ -54,6 +54,22 @@ function collect_deps {
 	echo $deps
 }
 
+function is_installed {
+	local installed_file="$2.jail-data/installed"
+
+	if [[ ! -f  $installed_file ]]; then
+		return 1
+	fi
+
+	local path_fo_file="$2$1"
+
+	if grep -q  "$path_to_file" "$installed_file"; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 function jail_install {
 	local path_to_file=$1
 	local cloned=$(collect_deps $path_to_file)
