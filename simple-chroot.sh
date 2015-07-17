@@ -129,6 +129,11 @@ mkdir -p $output_dir
 mkdir -p "$output_dir/.jail-data"
 
 for path_to_file in $paths_to_files; do
-	jail_install $path_to_file $output_dir
+	if is_installed $path_to_file $output_dir; then
+		printf "\`$path_to_file' is already installed and \
+		    will be ignored."
+	else
+		jail_install $path_to_file $output_dir
+	fi
 done
 
