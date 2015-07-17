@@ -14,7 +14,7 @@ function inc_refcount {
 		line="$1 1"
 		echo $line >> $refs_file
 		return
-	fi  
+	fi
 
 	sed -i "\|$1|d" $refs_file
 
@@ -57,13 +57,13 @@ function collect_deps {
 function is_installed {
 	local installed_file="$2.jail-data/installed"
 
-	if [[ ! -f  $installed_file ]]; then
+	if [[ ! -f $installed_file ]]; then
 		return 1
 	fi
 
 	local path_fo_file="$2$1"
 
-	if grep -q  "$path_to_file" "$installed_file"; then
+	if grep -q "$path_to_file" "$installed_file"; then
 		return 0
 	else
 		return 1
@@ -93,7 +93,7 @@ function jail_purge {
 
 function check_command {
 	command_file="$(which $1)" || \
-	    { printf "Fatal error: \`$1' command not found!\n" ;  exit 1; }
+	    { printf "Fatal error: \`$1' command not found!\n" ; exit 1; }
 	check_file $command_file
 }
 
@@ -105,7 +105,7 @@ function check_file {
 }
 
 OPTIND=1
-                              
+
 output_dir="./jail/"
 paths_to_files=()
 
