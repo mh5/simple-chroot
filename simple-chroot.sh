@@ -4,6 +4,35 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+function set_installed {
+	local path_to_file=$1
+	local installed_file=".jail-data/installed"
+	touch $installed_file
+
+	if ! grep -q "$path_to_file" "$installed_file"; then
+		echo "$path_to_file" >> $installed_file
+		return 0
+	else
+		return 1
+	fi
+}
+
+function unset_installed {
+	local path_to_file=$1
+	local installed_file=".jail-data/installed"
+
+	if [[ ! -f $installed_file ]]; then
+		return 1
+	fi
+
+	if is_installed $path_to_file; then
+		sed -i "\|$path_to_file|d" $installed_file
+		return 0
+	else
+		return 1
+	fi
+}
+
 function inc_refcount {
 	local refs_file=".jail-data/refs"
 	touch $refs_file
@@ -79,6 +108,8 @@ function jail_install {
 			cp -v --parents $i ./
 			inc_refcount $i
 		done
+
+	set_installed $path_to_file
 }
 
 function jail_purge {
