@@ -5,7 +5,7 @@
 # found in the LICENSE file.
 
 function inc_refcount {
-	local refs_file="$2.jail-data/refs"
+	local refs_file=".jail-data/refs"
 	touch $refs_file
 
 	local line=$(grep $1 $refs_file)
@@ -30,7 +30,7 @@ function inc_refcount {
 }
 
 function dec_refcount {
-	local refs_file="$2.jail-data/refs"
+	local refs_file=".jail-data/refs"
 	local line=$(grep $1 $refs_file)
 
 	sed -i "\|$1|d" $refs_file
@@ -48,20 +48,20 @@ function dec_refcount {
 
 function collect_deps {
 	local path_to_file=$1
-	local deps=$(ldd $path_to_file| grep -oh '/.* ')
+	local deps=$(ldd $path_to_file | grep -oh '/.* ')
 	local deps="$path_to_file $deps"
 
 	echo $deps
 }
 
 function is_installed {
-	local installed_file="$2.jail-data/installed"
+	local installed_file=".jail-data/installed"
 
 	if [[ ! -f $installed_file ]]; then
 		return 1
 	fi
 
-	local path_fo_file="$2$1"
+	local path_fo_file="$1"
 
 	if grep -q "$path_to_file" "$installed_file"; then
 		return 0
@@ -76,8 +76,8 @@ function jail_install {
 
 	for i in $cloned;
 		do
-			cp -v --parents $i $2
-			inc_refcount $i $2
+			cp -v --parents $i ./
+			inc_refcount $i
 		done
 }
 
@@ -87,7 +87,7 @@ function jail_purge {
 
 	for i in $decremented;
 		do
-			dec_refcount $i $2
+			dec_refcount $i
 		done
 }
 
@@ -126,13 +126,15 @@ while getopts "o:c:f:" opt; do
 done
 
 mkdir -p $output_dir
-mkdir -p "$output_dir/.jail-data"
+cd $output_dir
+
+mkdir -p ".jail-data"
 
 for path_to_file in $paths_to_files; do
-	if is_installed $path_to_file $output_dir; then
+	if is_installed $path_to_file; then
 		printf "\`$path_to_file' is already installed and will be ignored.\n"
 	else
-		jail_install $path_to_file $output_dir
+		jail_install $path_to_file
 	fi
 done
 
