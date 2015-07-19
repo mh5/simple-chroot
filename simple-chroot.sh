@@ -5,25 +5,23 @@
 # found in the LICENSE file.
 
 function is_installed {
-	local installed_file=".jail-data/installed"
 
-	if [[ ! -f $installed_file ]]; then
+	if [[ ! -f $FILE_INSTALLED ]]; then
 		return 1
 	fi
 
 	local path_fo_file="$1"
 
-	grep -q "$path_to_file" "$installed_file"
+	grep -q "$path_to_file" "$FILE_INSTALLED"
 	return $?
 }
 
 function set_installed {
 	local path_to_file=$1
-	local installed_file=".jail-data/installed"
-	touch $installed_file
+	touch $FILE_INSTALLED
 
-	if ! grep -q "$path_to_file" "$installed_file"; then
-		echo "$path_to_file" >> $installed_file
+	if ! grep -q "$path_to_file" "$FILE_INSTALLED"; then
+		echo "$path_to_file" >> $FILE_INSTALLED
 		return 0
 	fi
 
@@ -32,14 +30,13 @@ function set_installed {
 
 function unset_installed {
 	local path_to_file=$1
-	local installed_file=".jail-data/installed"
 
-	if [[ ! -f $installed_file ]]; then
+	if [[ ! -f $FILE_INSTALLED ]]; then
 		return 1
 	fi
 
 	if is_installed $path_to_file; then
-		sed -i "\|$path_to_file|d" $installed_file
+		sed -i "\|$path_to_file|d" $FILE_INSTALLED
 		return 0
 	fi
 
@@ -47,18 +44,17 @@ function unset_installed {
 }
 
 function inc_refcount {
-	local refs_file=".jail-data/refs"
-	touch $refs_file
+	touch $FILE_REFS
 
-	local line=$(grep $1 $refs_file)
+	local line=$(grep $1 $FILE_REFS)
 
 	if [ -z "$line" ]; then
 		line="$1 1"
-		echo $line >> $refs_file
+		echo $line >> $FILE_REFS
 		return
 	fi
 
-	sed -i "\|$1|d" $refs_file
+	sed -i "\|$1|d" $FILE_REFS
 
 	local line_arr=($line)
 	local dep=${line_arr[0]}
@@ -68,14 +64,13 @@ function inc_refcount {
 
 	local line="$dep $num"
 
-	echo $line >> $refs_file
+	echo $line >> $FILE_REFS
 }
 
 function dec_refcount {
-	local refs_file=".jail-data/refs"
-	local line=$(grep $1 $refs_file)
+	local line=$(grep $1 $FILE_REFS)
 
-	sed -i "\|$1|d" $refs_file
+	sed -i "\|$1|d" $FILE_REFS
 
 	local line_arr=($line)
 	local dep=${line_arr[0]}
@@ -89,7 +84,7 @@ function dec_refcount {
 	fi
 
 	local line="$dep $num"
-	echo $line >> $refs_file
+	echo $line >> $FILE_REFS
 }
 
 function collect_deps {
@@ -163,6 +158,9 @@ mkdir -p $output_dir
 cd $output_dir
 
 mkdir -p ".jail-data"
+
+FILE_REFS=".jail-data/refs"
+FILE_INSTALLED=".jail-data/installed"
 
 for path_to_file in $paths_to_files; do
 	if is_installed $path_to_file; then
