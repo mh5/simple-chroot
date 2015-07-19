@@ -86,6 +86,11 @@ function dec_refcount {
 
 	local num=$((num-1))
 
+	if ((num <= 0)); then
+		rm .$dep
+		return
+	fi
+
 	local line="$dep $num"
 
 	echo $line >> $refs_file
