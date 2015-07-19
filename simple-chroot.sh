@@ -13,11 +13,8 @@ function is_installed {
 
 	local path_fo_file="$1"
 
-	if grep -q "$path_to_file" "$installed_file"; then
-		return 0
-	else
-		return 1
-	fi
+	grep -q "$path_to_file" "$installed_file"
+	return $?
 }
 
 function set_installed {
@@ -28,9 +25,9 @@ function set_installed {
 	if ! grep -q "$path_to_file" "$installed_file"; then
 		echo "$path_to_file" >> $installed_file
 		return 0
-	else
-		return 1
 	fi
+
+	return 1
 }
 
 function unset_installed {
@@ -44,9 +41,9 @@ function unset_installed {
 	if is_installed $path_to_file; then
 		sed -i "\|$path_to_file|d" $installed_file
 		return 0
-	else
-		return 1
 	fi
+
+	return 1
 }
 
 function inc_refcount {
@@ -92,7 +89,6 @@ function dec_refcount {
 	fi
 
 	local line="$dep $num"
-
 	echo $line >> $refs_file
 }
 
