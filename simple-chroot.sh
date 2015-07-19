@@ -4,6 +4,22 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+function is_installed {
+	local installed_file=".jail-data/installed"
+
+	if [[ ! -f $installed_file ]]; then
+		return 1
+	fi
+
+	local path_fo_file="$1"
+
+	if grep -q "$path_to_file" "$installed_file"; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 function set_installed {
 	local path_to_file=$1
 	local installed_file=".jail-data/installed"
@@ -81,22 +97,6 @@ function collect_deps {
 	local deps="$path_to_file $deps"
 
 	echo $deps
-}
-
-function is_installed {
-	local installed_file=".jail-data/installed"
-
-	if [[ ! -f $installed_file ]]; then
-		return 1
-	fi
-
-	local path_fo_file="$1"
-
-	if grep -q "$path_to_file" "$installed_file"; then
-		return 0
-	else
-		return 1
-	fi
 }
 
 function jail_install {
