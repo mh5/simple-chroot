@@ -114,12 +114,14 @@ function jail_install {
 
 function jail_purge {
 	local path_to_file=$1
-	local decrementedd=$(collect_deps $path_to_file)
+	local decremented=$(collect_deps $path_to_file)
 
 	for i in $decremented;
 		do
 			dec_refcount $i
 		done
+
+	unset_installed $path_to_file
 }
 
 function check_command {
