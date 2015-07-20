@@ -133,40 +133,43 @@ function check_file {
 	fi
 }
 
-OPTIND=1
+
+if (( "$#" < 2 )); then
+	echo Fatal error: too few arguments!
+	exit 1
+fi
 
 output_dir="./jail/"
-paths_to_files=()
-
-while getopts "o:c:f:" opt; do
-	case "$opt" in
-		f)
-			check_file $OPTARG
-			paths_to_files+="$OPTARG "
-		;;
-		c)
-			check_command $OPTARG
-			paths_to_files+="$command_file "
-		;;
-		o)
-			output_dir="$OPTARG"
-		;;
-	esac
-done
-
 mkdir -p $output_dir
 cd $output_dir
-
 mkdir -p ".jail-data"
+
+paths_to_files=()
+action=""
 
 FILE_REFS=".jail-data/refs"
 FILE_INSTALLED=".jail-data/installed"
 
-for path_to_file in $paths_to_files; do
-	if is_installed $path_to_file; then
-		printf "\`$path_to_file' is already installed and will be ignored.\n"
+for arg; do
+	if [[ $action == "" ]]; then
+		if [[ $arg == "install" ]] || [[ $arg == "purge" ]] ; then
+			action="jail_$arg"
+		else
+			echo "Fatal error: unknown action \`$arg'!"
+			exit 1
+		fi
 	else
-		jail_install $path_to_file
+		if [[ $arg == .* ]] || [[ $arg == /* ]]; then
+			check_file $arg
+			paths_to_files+="$arg "
+		else
+			check_command $arg
+			paths_to_files+="$command_file "
+		fi
 	fi
+done
+
+for path in $paths_to_files; do
+	$action $path
 done
 
