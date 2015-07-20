@@ -4,6 +4,11 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+function usage {
+	echo "Usage: ./simple-chroot.sh    install {file_path | external_command}... |"
+	echo "                             purge {file_path | external_command}..."
+}
+
 function is_installed {
 	if [[ ! -f $FILE_INSTALLED ]]; then
 		return 1
@@ -134,6 +139,7 @@ function check_file {
 
 if (( "$#" < 2 )); then
 	echo Fatal error: too few arguments!
+	usage
 	exit 1
 fi
 
@@ -154,6 +160,7 @@ for arg; do
 			action="jail_$arg"
 		else
 			echo "Fatal error: unknown action \`$arg'!"
+			usage
 			exit 1
 		fi
 	else
