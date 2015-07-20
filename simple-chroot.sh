@@ -133,7 +133,6 @@ function check_file {
 	fi
 }
 
-
 if (( "$#" < 2 )); then
 	echo Fatal error: too few arguments!
 	exit 1
