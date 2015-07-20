@@ -5,7 +5,6 @@
 # found in the LICENSE file.
 
 function is_installed {
-
 	if [[ ! -f $FILE_INSTALLED ]]; then
 		return 1
 	fi
@@ -132,7 +131,6 @@ function check_file {
 		exit 1;
 	fi
 }
-
 
 if (( "$#" < 2 )); then
 	echo Fatal error: too few arguments!
