@@ -143,11 +143,6 @@ if (( "$#" < 2 )); then
 	exit 1
 fi
 
-output_dir="./jail/"
-mkdir -p $output_dir
-cd $output_dir
-mkdir -p ".jail-data"
-
 paths_to_files=()
 action=""
 
@@ -164,15 +159,23 @@ for arg; do
 			exit 1
 		fi
 	else
-		if [[ $arg == .* ]] || [[ $arg == /* ]]; then
+		if [[ $arg == /* ]] ; then
 			check_file $arg
 			paths_to_files+="$arg "
+		elif [[ $arg == .* ]] ; then
+			check_file $arg
+			paths_to_files+="$(realpath $arg) "
 		else
 			check_command $arg
 			paths_to_files+="$command_file "
 		fi
 	fi
 done
+
+output_dir="./jail/"
+mkdir -p $output_dir
+cd $output_dir
+mkdir -p ".jail-data"
 
 for path in $paths_to_files; do
 	$action $path
