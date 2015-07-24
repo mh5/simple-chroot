@@ -172,7 +172,7 @@ for arg; do
 	fi
 done
 
-output_dir="./jail/"
+output_dir="./"
 mkdir -p $output_dir
 cd $output_dir
 mkdir -p ".jail-data"
