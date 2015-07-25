@@ -125,8 +125,16 @@ function jail_purge {
 }
 
 function check_command {
-	command_file="$(which $1)" || \
-	    { printf "Fatal error: \`$1' command not found!\n" ; exit 1; }
+	command_file="$(which $1)" || { \
+			if [[ "$(type -t $1)" == "builtin" ]]; then
+				printf "Fatal error: \`$1' is a builtin!\n";
+				printf "Note: try installing a shell instead, e.g. bash!\n"
+				exit 1;
+			fi
+
+			printf "Fatal error: \`$1' command not found!\n";
+			exit 1;
+		}
 	check_file $command_file
 }
 
