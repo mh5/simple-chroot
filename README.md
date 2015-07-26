@@ -6,6 +6,8 @@ simple-chroot is a bash script that manages installation and uninstallation of e
 
 ```
 # installing bash, vim and another executable.
+mkdir jail
+cd jail
 $ ./simple-chroot.sh install bash vim /path/to/another/executable
 ```
 
