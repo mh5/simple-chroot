@@ -101,6 +101,12 @@ function collect_deps {
 
 function jail_install {
 	local path_to_file=$1
+
+	if is_installed "$path_to_file" ; then
+		echo "Note: \`$path_to_file' will be ignored because it is already installed!"
+		return 1
+	fi
+
 	local cloned=$(collect_deps $path_to_file)
 
 	for i in $cloned;
@@ -110,10 +116,17 @@ function jail_install {
 		done
 
 	set_installed $path_to_file
+	return $?
 }
 
 function jail_purge {
 	local path_to_file=$1
+
+	if ! is_installed "$path_to_file" ; then
+		echo "Note: \`$path_to_file' is not installed to be purged!"
+		return 1
+	fi
+
 	local decremented=$(collect_deps $path_to_file)
 
 	for i in $decremented;
@@ -122,6 +135,7 @@ function jail_purge {
 		done
 
 	unset_installed $path_to_file
+	return $?
 }
 
 function check_command {
