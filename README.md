@@ -2,12 +2,12 @@
 
 simple-chroot is a bash script that manages installation and uninstallation of executable files on chrooted environments. The script automatically identifies the dependencies of the executables you want to install or purge using `ldd`. If you install an executable, its dependencies are cloned automatically. You can uninstall these executables later on, and dependencies that are no longer needed by any other executables are deleted automatically. The chroot environment is assumed to be the working directory of the script.
 
-##Installing packages
+##Installing files
 
 ```
-# installing bash, vim and another executable.
 mkdir jail
 cd jail
+# installing bash, vim and another executable.
 $ ./simple-chroot.sh install bash vim /path/to/another/executable
 ```
 
