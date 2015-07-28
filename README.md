@@ -22,4 +22,4 @@ You can reference a file using one of the following ways...
 
 1. the absolute path to the file
 2. a relative path (that starts with a dot) to the file
-3. if the file is recognized as an external command, like `ls`, you can use the command name directly, and it will be expanded using `which`.
+3. if the file is recognized as an external command, like `ls`, you can use the command name directly, and it will be expanded using `type`, a bash builtin.
