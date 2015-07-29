@@ -141,14 +141,14 @@ function jail_purge {
 function check_command {
 	command_type="$(type -t $1)"
 
-	if [[ "command_type" == "builtin" ]] ; then
-		printf "Fatal error: \`$1' is a builtin!\n";
-		printf "Note: try installing a shell instead, e.g. bash!\n"
+	if [[ "$command_type" == "builtin" ]] ; then
+		echo "Fatal error: \`$1' is a builtin!";
+		echo "Note: try installing a shell instead, e.g. bash!"
 		exit 1;
 	fi
 
 	if [[ "$command_type" != "file" ]] ; then
-		printf "Fatal error: \`$1' command not found!\n";
+		echo "Fatal error: \`$1' command not found!";
 		exit 1;
 	fi
 
