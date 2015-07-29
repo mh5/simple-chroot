@@ -41,6 +41,7 @@ function unset_installed {
 
 	if is_installed $path_to_file; then
 		sed -i "\|$path_to_file|d" $FILE_INSTALLED
+		echo "Unsetting installation of \`$path_to_file'"
 		return 0
 	fi
 
@@ -84,6 +85,7 @@ function dec_refcount {
 
 	if ((num <= 0)); then
 		rm .$dep
+		echo rm .$dep
 		return
 	fi
 
