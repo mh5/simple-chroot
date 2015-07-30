@@ -16,15 +16,15 @@ function is_installed {
 
 	local path_fo_file="$1"
 
-	grep -q "$path_to_file" "$FILE_INSTALLED"
+	grep -q "$path_to_file" $FILE_INSTALLED
 	return $?
 }
 
 function set_installed {
-	local path_to_file=$1
+	local path_to_file="$1"
 	touch $FILE_INSTALLED
 
-	if ! grep -q "$path_to_file" "$FILE_INSTALLED"; then
+	if ! grep -q "$path_to_file" $FILE_INSTALLED; then
 		echo "$path_to_file" >> $FILE_INSTALLED
 		return 0
 	fi
@@ -33,13 +33,13 @@ function set_installed {
 }
 
 function unset_installed {
-	local path_to_file=$1
+	local path_to_file="$1"
 
 	if [[ ! -f $FILE_INSTALLED ]]; then
 		return 1
 	fi
 
-	if is_installed $path_to_file; then
+	if is_installed "$path_to_file" ; then
 		sed -i "\|$path_to_file|d" $FILE_INSTALLED
 		echo "Unsetting installation of \`$path_to_file'"
 		return 0
@@ -51,11 +51,11 @@ function unset_installed {
 function inc_refcount {
 	touch $FILE_REFS
 
-	local line=$(grep $1 $FILE_REFS)
+	local line="$(grep $1 $FILE_REFS)"
 
 	if [ -z "$line" ]; then
 		line="$1 1"
-		echo $line >> $FILE_REFS
+		echo "$line" >> $FILE_REFS
 		return
 	fi
 
@@ -69,11 +69,11 @@ function inc_refcount {
 
 	local line="$dep $num"
 
-	echo $line >> $FILE_REFS
+	echo "$line" >> $FILE_REFS
 }
 
 function dec_refcount {
-	local line=$(grep $1 $FILE_REFS)
+	local line="$(grep $1 $FILE_REFS)"
 
 	sed -i "\|$1|d" $FILE_REFS
 
@@ -84,21 +84,21 @@ function dec_refcount {
 	local num=$((num-1))
 
 	if ((num <= 0)); then
-		rm .$dep
-		echo rm .$dep
+		rm ".$dep"
+		echo "rm \".$dep\""
 		return
 	fi
 
 	local line="$dep $num"
-	echo $line >> $FILE_REFS
+	echo "$line" >> $FILE_REFS
 }
 
 function collect_deps {
-	local path_to_file=$1
-	local deps=$(ldd $path_to_file | grep -oh '/.* ')
+	local path_to_file="$1"
+	local deps="$(ldd $path_to_file | grep -oh '/.* ')"
 	local deps="$path_to_file $deps"
 
-	echo $deps
+	echo "$deps"
 }
 
 function jail_install {
