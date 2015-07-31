@@ -84,8 +84,7 @@ function dec_refcount {
 	local num=$((num-1))
 
 	if ((num <= 0)); then
-		rm ".$dep"
-		echo "rm \".$dep\""
+		rm -v ".$dep"
 		return
 	fi
 
