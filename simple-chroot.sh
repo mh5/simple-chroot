@@ -190,13 +190,13 @@ for arg; do
 	else
 		if [[ $arg == /* ]] ; then
 			check_file $arg
-			paths_to_files+="$arg "
+			paths_to_files+=("$arg")
 		elif [[ $arg == .* ]] ; then
 			check_file $arg
-			paths_to_files+="$(realpath $arg) "
+			paths_to_files+=("$(realpath $arg)")
 		else
 			check_command $arg
-			paths_to_files+="$command_file "
+			paths_to_files+=("$command_file")
 		fi
 	fi
 done
@@ -206,7 +206,7 @@ mkdir -p $output_dir
 cd $output_dir
 mkdir -p ".jail-data"
 
-for path in $paths_to_files; do
+for path in "${paths_to_files[@]}"; do
 	$action $path
 done
 
