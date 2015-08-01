@@ -179,7 +179,7 @@ FILE_INSTALLED=".jail-data/installed"
 
 for arg; do
 	if [[ $action == "" ]]; then
-		if [[ $arg == "install" ]] || [[ $arg == "purge" ]] ; then
+		if [[ "$arg" == "install" ]] || [[ "$arg" == "purge" ]] ; then
 			action="jail_$arg"
 		else
 			echo "Fatal error: unknown action \`$arg'!"
@@ -187,14 +187,14 @@ for arg; do
 			exit 1
 		fi
 	else
-		if [[ $arg == /* ]] ; then
-			check_file $arg
+		if [[ "$arg" == /* ]] ; then
+			check_file "$arg"
 			paths_to_files+=("$arg")
-		elif [[ $arg == .* ]] ; then
-			check_file $arg
+		elif [[ "$arg" == .* ]] ; then
+			check_file "$arg"
 			paths_to_files+=("$(realpath $arg)")
 		else
-			check_command $arg
+			check_command "$arg"
 			paths_to_files+=("$command_file")
 		fi
 	fi
@@ -206,6 +206,6 @@ cd $output_dir
 mkdir -p ".jail-data"
 
 for path in "${paths_to_files[@]}"; do
-	$action $path
+	$action "$path"
 done
 
