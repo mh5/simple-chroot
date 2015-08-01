@@ -110,11 +110,10 @@ function jail_install {
 
 	local cloned="$(collect_deps $path_to_file)"
 
-	for i in $cloned;
-		do
-			cp -v --parents "$i" ./
-			inc_refcount "$i"
-		done
+	for i in $cloned; do
+		cp -v --parents "$i" ./
+		inc_refcount "$i"
+	done
 
 	set_installed "$path_to_file"
 	return $?
