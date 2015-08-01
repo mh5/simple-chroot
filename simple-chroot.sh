@@ -26,6 +26,7 @@ function set_installed {
 
 	if ! grep -q "$path_to_file" $FILE_INSTALLED; then
 		echo "$path_to_file" >> $FILE_INSTALLED
+		echo "Set installation of \`$path_to_file'"
 		return 0
 	fi
 
@@ -41,7 +42,7 @@ function unset_installed {
 
 	if is_installed "$path_to_file" ; then
 		sed -i "\|$path_to_file|d" $FILE_INSTALLED
-		echo "Unsetting installation of \`$path_to_file'"
+		echo "Unset installation of \`$path_to_file'"
 		return 0
 	fi
 
