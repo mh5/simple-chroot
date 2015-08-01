@@ -9,6 +9,18 @@ function usage {
 	echo "                             purge {file_path | external_command}..."
 }
 
+function echo_fatal {
+	tput setaf 1
+	>&2 echo "Fatal error: $@"
+	tput sgr0
+}
+
+function echo_note {
+	tput setaf 3
+	echo "Note: $@"
+	tput sgr0
+}
+
 function is_installed {
 	if [[ ! -f $FILE_INSTALLED ]]; then
 		return 1
@@ -105,7 +117,7 @@ function jail_install {
 	local path_to_file="$1"
 
 	if is_installed "$path_to_file" ; then
-		echo "Note: \`$path_to_file' will be ignored because it is already installed!"
+		echo_note "\`$path_to_file' will be ignored because it is already installed!"
 		return 1
 	fi
 
@@ -124,7 +136,7 @@ function jail_purge {
 	local path_to_file="$1"
 
 	if ! is_installed "$path_to_file" ; then
-		echo "Note: \`$path_to_file' is not installed to be purged!"
+		echo_note "\`$path_to_file' is not installed to be purged!"
 		return 1
 	fi
 
@@ -143,13 +155,13 @@ function check_command {
 	command_type="$(type -t $1)"
 
 	if [[ "$command_type" == "builtin" ]] ; then
-		echo "Fatal error: \`$1' is a builtin!";
-		echo "Note: try installing a shell instead, e.g. bash!"
+		echo_fatal "\`$1' is a builtin!";
+		echo_note "try installing a shell instead, e.g. bash!"
 		exit 1;
 	fi
 
 	if [[ "$command_type" != "file" ]] ; then
-		echo "Fatal error: \`$1' command not found!";
+		echo_fatal "\`$1' command not found!";
 		exit 1;
 	fi
 
@@ -160,13 +172,13 @@ function check_command {
 
 function check_file {
 	if [[ ! -f "$1" ]]; then
-		echo "Fatal error: \`$1' is not a file!"
+		echo_fatal "\`$1' is not a file!"
 		exit 1;
 	fi
 }
 
 if (( "$#" < 2 )); then
-	echo Fatal error: too few arguments!
+	echo_fatal "too few arguments!"
 	usage
 	exit 1
 fi
@@ -182,7 +194,7 @@ for arg; do
 		if [[ "$arg" == "install" ]] || [[ "$arg" == "purge" ]] ; then
 			action="jail_$arg"
 		else
-			echo "Fatal error: unknown action \`$arg'!"
+			echo_fatal "unknown action \`$arg'!"
 			usage
 			exit 1
 		fi
