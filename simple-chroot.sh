@@ -101,41 +101,41 @@ function collect_deps {
 }
 
 function jail_install {
-	local path_to_file=$1
+	local path_to_file="$1"
 
 	if is_installed "$path_to_file" ; then
 		echo "Note: \`$path_to_file' will be ignored because it is already installed!"
 		return 1
 	fi
 
-	local cloned=$(collect_deps $path_to_file)
+	local cloned="$(collect_deps $path_to_file)"
 
 	for i in $cloned;
 		do
-			cp -v --parents $i ./
-			inc_refcount $i
+			cp -v --parents "$i" ./
+			inc_refcount "$i"
 		done
 
-	set_installed $path_to_file
+	set_installed "$path_to_file"
 	return $?
 }
 
 function jail_purge {
-	local path_to_file=$1
+	local path_to_file="$1"
 
 	if ! is_installed "$path_to_file" ; then
 		echo "Note: \`$path_to_file' is not installed to be purged!"
 		return 1
 	fi
 
-	local decremented=$(collect_deps $path_to_file)
+	local decremented="$(collect_deps $path_to_file)"
 
 	for i in $decremented;
 		do
-			dec_refcount $i
+			dec_refcount "$i"
 		done
 
-	unset_installed $path_to_file
+	unset_installed "$path_to_file"
 	return $?
 }
 
@@ -155,11 +155,11 @@ function check_command {
 
 	command_file="$(type -P $1)"
 
-	check_file $command_file
+	check_file "$command_file"
 }
 
 function check_file {
-	if [[ ! -f $1 ]]; then
+	if [[ ! -f "$1" ]]; then
 		echo "Fatal error: \`$1' is not a file!"
 		exit 1;
 	fi
