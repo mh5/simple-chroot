@@ -177,12 +177,6 @@ function check_file {
 	fi
 }
 
-if (( "$#" < 2 )); then
-	echo_fatal "too few arguments!"
-	usage
-	exit 1
-fi
-
 paths_to_files=()
 action=""
 
@@ -192,6 +186,11 @@ FILE_INSTALLED=".jail-data/installed"
 for arg; do
 	if [[ $action == "" ]]; then
 		if [[ "$arg" == install ]] || [[ "$arg" == purge ]] ; then
+			if (( "$#" < 2 )); then
+				echo_fatal "too few arguments!"
+				usage
+				exit 1
+			fi
 			action="jail_$arg"
 		else
 			echo_fatal "unknown action \`$arg'!"
