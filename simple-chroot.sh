@@ -154,7 +154,7 @@ function jail_purge {
 function check_command {
 	command_type="$(type -t $1)"
 
-	if [[ "$command_type" == "builtin" ]] ; then
+	if [[ "$command_type" == builtin ]] ; then
 		echo_fatal "\`$1' is a builtin!";
 		echo_note "try installing a shell instead, e.g. bash!"
 		exit 1;
@@ -191,7 +191,7 @@ FILE_INSTALLED=".jail-data/installed"
 
 for arg; do
 	if [[ $action == "" ]]; then
-		if [[ "$arg" == "install" ]] || [[ "$arg" == "purge" ]] ; then
+		if [[ "$arg" == install ]] || [[ "$arg" == purge ]] ; then
 			action="jail_$arg"
 		else
 			echo_fatal "unknown action \`$arg'!"
