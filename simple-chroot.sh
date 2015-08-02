@@ -5,7 +5,8 @@
 # found in the LICENSE file.
 
 function usage {
-	echo "Usage: ./simple-chroot.sh    install {file_path | external_command}... |"
+	echo "Usage: ./simple-chroot.sh    help |"
+	echo "                             install {file_path | external_command}... |"
 	echo "                             purge {file_path | external_command}..."
 }
 
@@ -192,6 +193,9 @@ for arg; do
 				exit 1
 			fi
 			action="jail_$arg"
+		elif [[ "$arg" == help ]]; then
+			usage
+			exit 0
 		else
 			echo_fatal "unknown action \`$arg'!"
 			usage
