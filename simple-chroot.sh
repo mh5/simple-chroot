@@ -35,12 +35,14 @@ function set_installed {
 	local path_to_file="$1"
 	touch $FILE_INSTALLED
 
-	if ! grep -q "$path_to_file" $FILE_INSTALLED; then
-		echo "$path_to_file" >> $FILE_INSTALLED
-		echo "Set installation of \`$path_to_file'"
-		return 0
-	fi
+	is_installed "$path_to_file" || {
+		echo "$path_to_file" >> $FILE_INSTALLED && {
+			echo "Set installation of \`$path_to_file'"
+			return 0
+		}
+	}
 
+	echo_note "Could not set installation of \`$path_to_file'!"
 	return 1
 }
 
@@ -49,12 +51,14 @@ function unset_installed {
 
 	[[ -f $FILE_INSTALLED ]] || return 1
 
-	if is_installed "$path_to_file" ; then
-		sed -i "\|$path_to_file|d" $FILE_INSTALLED
-		echo "Unset installation of \`$path_to_file'"
-		return 0
-	fi
+	is_installed "$path_to_file" && {
+		sed -i "\|$path_to_file|d" $FILE_INSTALLED && {
+			echo "Unset installation of \`$path_to_file'"
+			return 0
+		}
+	}
 
+	echo_note "Could not unset installation of \`$path_to_file'!"
 	return 1
 }
 
