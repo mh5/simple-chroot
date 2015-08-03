@@ -23,9 +23,7 @@ function echo_note {
 }
 
 function is_installed {
-	if [[ ! -f $FILE_INSTALLED ]]; then
-		return 1
-	fi
+	[[ -f $FILE_INSTALLED ]] || return 1
 
 	local path_to_file="$1"
 
@@ -49,9 +47,7 @@ function set_installed {
 function unset_installed {
 	local path_to_file="$1"
 
-	if [[ ! -f $FILE_INSTALLED ]]; then
-		return 1
-	fi
+	[[ -f $FILE_INSTALLED ]] || return 1
 
 	if is_installed "$path_to_file" ; then
 		sed -i "\|$path_to_file|d" $FILE_INSTALLED
