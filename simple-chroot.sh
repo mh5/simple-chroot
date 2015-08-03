@@ -217,7 +217,12 @@ done
 
 output_dir="./"
 mkdir -p $output_dir
-cd $output_dir
+
+cd $output_dir || {
+	echo_fatal "could not enter jail directory \`$output_dir'!"
+	exit 1
+}
+
 mkdir -p ".jail-data"
 
 for path in "${paths_to_files[@]}"; do
