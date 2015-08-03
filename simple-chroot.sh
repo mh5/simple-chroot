@@ -108,7 +108,7 @@ function dec_refcount {
 
 function collect_deps {
 	local path_to_file="$1"
-	local deps="$(ldd $path_to_file | grep -oh '/.* ')"
+	local deps="$(ldd "$path_to_file" | grep -oh '/.* ')"
 	deps="$path_to_file $deps"
 
 	echo "$deps"
