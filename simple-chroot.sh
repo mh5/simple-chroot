@@ -65,7 +65,7 @@ function unset_installed {
 function inc_refcount {
 	touch $FILE_REFS
 
-	local line="$(grep $1 $FILE_REFS)"
+	local line="$(grep "$1" $FILE_REFS)"
 
 	if [ -z "$line" ]; then
 		line="$1 1"
@@ -87,7 +87,7 @@ function inc_refcount {
 }
 
 function dec_refcount {
-	local line="$(grep $1 $FILE_REFS)"
+	local line="$(grep "$1" $FILE_REFS)"
 
 	sed -i "\|$1|d" $FILE_REFS
 
@@ -122,7 +122,7 @@ function jail_install {
 		return 1
 	fi
 
-	local cloned="$(collect_deps $path_to_file)"
+	local cloned="$(collect_deps "$path_to_file")"
 
 	for i in $cloned; do
 		cp -v --parents "$i" ./
@@ -141,7 +141,7 @@ function jail_purge {
 		return 1
 	fi
 
-	local decremented="$(collect_deps $path_to_file)"
+	local decremented="$(collect_deps "$path_to_file")"
 
 	for i in $decremented;
 		do
@@ -153,7 +153,7 @@ function jail_purge {
 }
 
 function check_command {
-	command_type="$(type -t $1)"
+	command_type="$(type -t "$1")"
 
 	if [[ "$command_type" == builtin ]] ; then
 		echo_fatal "\`$1' is a builtin!";
@@ -166,7 +166,7 @@ function check_command {
 		exit 1;
 	fi
 
-	command_file="$(type -P $1)"
+	command_file="$(type -P "$1")"
 
 	check_file "$command_file"
 }
