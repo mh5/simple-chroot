@@ -12,13 +12,13 @@ function usage {
 
 function echo_fatal {
 	tput setaf 1
-	>&2 echo "Fatal error: $@"
+	>&2 echo "Fatal error: " "$@"
 	tput sgr0
 }
 
 function echo_note {
 	tput setaf 3
-	echo "Note: $@"
+	echo "Note: " "$@"
 	tput sgr0
 }
 
