@@ -79,9 +79,9 @@ function inc_refcount {
 	local dep=${line_arr[0]}
 	local num=${line_arr[1]}
 
-	local num=$((num+1))
+	num=$((num+1))
 
-	local line="$dep $num"
+	line="$dep $num"
 
 	echo "$line" >> $FILE_REFS
 }
@@ -95,21 +95,21 @@ function dec_refcount {
 	local dep=${line_arr[0]}
 	local num=${line_arr[1]}
 
-	local num=$((num-1))
+	num=$((num-1))
 
 	if ((num <= 0)); then
 		rm -v ".$dep"
 		return
 	fi
 
-	local line="$dep $num"
+	line="$dep $num"
 	echo "$line" >> $FILE_REFS
 }
 
 function collect_deps {
 	local path_to_file="$1"
 	local deps="$(ldd $path_to_file | grep -oh '/.* ')"
-	local deps="$path_to_file $deps"
+	deps="$path_to_file $deps"
 
 	echo "$deps"
 }
