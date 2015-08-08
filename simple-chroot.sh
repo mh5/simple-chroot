@@ -143,10 +143,9 @@ function jail_purge {
 
 	local decremented="$(collect_deps "$path_to_file")"
 
-	for i in $decremented;
-		do
-			dec_refcount "$i"
-		done
+	for i in $decremented; do
+		dec_refcount "$i"
+	done
 
 	unset_installed "$path_to_file"
 	return $?
