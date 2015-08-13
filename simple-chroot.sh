@@ -27,7 +27,7 @@ function is_installed {
 
 	local path_to_file="$1"
 
-	grep -q "$path_to_file" $FILE_INSTALLED
+	grep -q "^$path_to_file$" $FILE_INSTALLED
 	return $?
 }
 
