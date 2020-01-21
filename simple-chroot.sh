@@ -6,6 +6,7 @@
 
 function usage {
 	echo "Usage: ./simple-chroot.sh    help"
+	echo "                             execute {file_path | external_command}"
 	echo "                             install {file_path | external_command}..."
 	echo "                             purge   {file_path | external_command}..."
 }
@@ -114,6 +115,15 @@ function collect_deps {
 	echo "$deps"
 }
 
+function jail_execute {
+	local path_to_file="$1"
+
+	jail_install "$1"
+	sudo chroot ./ "$1"
+
+	return $?
+}
+
 function jail_install {
 	local path_to_file="$1"
 
@@ -185,7 +195,7 @@ FILE_INSTALLED=".jail-data/installed"
 
 for arg; do
 	if [[ $action == "" ]]; then
-		if [[ "$arg" == install ]] || [[ "$arg" == purge ]] ; then
+		if [[ "$arg" == execute ]] || [[ "$arg" == install ]] || [[ "$arg" == purge ]] ; then
 			if (( "$#" < 2 )); then
 				echo_fatal "too few arguments!"
 				usage
