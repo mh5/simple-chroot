@@ -5,9 +5,9 @@
 # found in the LICENSE file.
 
 function usage {
-	echo "Usage: ./simple-chroot.sh    help |"
-	echo "                             install {file_path | external_command}... |"
-	echo "                             purge {file_path | external_command}..."
+	echo "Usage: ./simple-chroot.sh    help"
+	echo "                             install {file_path | external_command}..."
+	echo "                             purge   {file_path | external_command}..."
 }
 
 function echo_fatal {
@@ -155,14 +155,14 @@ function check_command {
 	command_type="$(type -t "$1")"
 
 	if [[ "$command_type" == builtin ]] ; then
-		echo_fatal "\`$1' is a builtin!";
+		echo_fatal "\`$1' is a builtin!"
 		echo_note "try installing a shell instead, e.g. bash!"
-		exit 1;
+		exit 1
 	fi
 
 	if [[ "$command_type" != "file" ]] ; then
-		echo_fatal "\`$1' command not found!";
-		exit 1;
+		echo_fatal "\`$1' command not found!"
+		exit 1
 	fi
 
 	command_file="$(type -P "$1")"
@@ -173,7 +173,7 @@ function check_command {
 function check_file {
 	if [[ ! -f "$1" ]]; then
 		echo_fatal "\`$1' is not a file!"
-		exit 1;
+		exit 1
 	fi
 }
 
@@ -192,7 +192,7 @@ for arg; do
 				exit 1
 			fi
 			action="jail_$arg"
-		elif [[ "$arg" == help ]]; then
+		elif [[ "$arg" == help ]] || [[ "$arg" == "--help" ]]; then
 			usage
 			exit 0
 		else
@@ -201,10 +201,10 @@ for arg; do
 			exit 1
 		fi
 	else
-		if [[ "$arg" == /* ]] ; then
+		if [[ "$arg" == /* ]]; then
 			check_file "$arg"
 			paths_to_files+=("$arg")
-		elif [[ "$arg" == .* ]] ; then
+		elif [[ "$arg" == .* ]]; then
 			check_file "$arg"
 			paths_to_files+=("$(realpath $arg)")
 		else
